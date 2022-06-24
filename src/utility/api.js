@@ -3,7 +3,7 @@ import store from "../redux/store";
 import { LOGOUT } from "../redux/actions/types";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://medicalapp-api-uz.herokuapp.com/api/',
+  baseURL: 'https://medicalapp-api-uz.herokuapp.com/api/',
   headers: {
     "Content-Type": "application/json",
   },

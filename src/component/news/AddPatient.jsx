@@ -14,7 +14,7 @@ export const AddPatient = () => {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_API_URL + "user/history/all")
+      .get("https://medicalapp-api-uz.herokuapp.com/api/user/history/all")
       .then(function (response) {
         setData(response.data.data);
       })
@@ -34,10 +34,10 @@ export const AddPatient = () => {
         form.resetFields();
         setCreateVisible(false)
         axios
-        .post(process.env.REACT_APP_API_URL + "user/history/create", values)
+        .post("https://medicalapp-api-uz.herokuapp.com/api/user/history/create", values)
           .then((res) => {
             axios
-            .get(process.env.REACT_APP_API_URL + "user/history/all")
+            .get("https://medicalapp-api-uz.herokuapp.com/api/user/history/all")
             .then(function (response) {
               setData(response.data.data);
             })
