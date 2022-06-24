@@ -16,7 +16,7 @@ export const List = () => {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_API_URL + "user/history/all")
+      .get("https://medicalapp-api-uz.herokuapp.com/api/user/history/all")
       .then(function (response) {
         setData(response.data.data);
       })
