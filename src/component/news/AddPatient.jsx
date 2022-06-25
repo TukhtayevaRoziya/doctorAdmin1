@@ -5,12 +5,16 @@ import { Content } from "antd/lib/layout/layout";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 
 import axios from "axios";
+import { DeleteOutlined } from '@ant-design/icons';
 
 export const AddPatient = () => {
   const [createVisible, setCreateVisible] = useState(false);
 
   const [form] = Form.useForm();
   const [data, setData] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [selectedID, setSelectedID] = useState(null);
 
   useEffect(() => {
     axios
@@ -25,6 +29,37 @@ export const AddPatient = () => {
 
   const showCreateModal = () => {
     setCreateVisible(true);
+  };
+
+  const showModal = (id) => {
+    console.log(id._id);
+    setVisible(true);
+    setSelectedID(id._id);
+  };
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    axios.delete(`https://medicalapp-api-uz.herokuapp.com/api/user/history/${selectedID}`).then((res)=>{
+      console.log(res);
+      axios
+      .get("https://medicalapp-api-uz.herokuapp.com/api/user/history/all")
+      .then(function (response) {
+        setData(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    })
+    // dispatch(deleteAction("userComment", DELETE_USER_COMMENT, selectedID));
+    setTimeout(() => {
+      setVisible(false);
+      setConfirmLoading(false);
+      // dispatch(getAction("userComment", GET_USER_COMMENT));
+    }, 1000);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
   };
 
   const createHandleOk = () => {
@@ -105,7 +140,33 @@ export const AddPatient = () => {
           </Modal>
         </>
       ),
-    },
+      dataIndex: "",
+      key: "x",
+      render: (text) => (
+        
+        <>
+          <Button type="danger" onClick={(e) => showModal(text)}>
+            <DeleteOutlined />
+          </Button>
+          <Modal
+            title={"O'chirish"}
+            visible={visible}
+            onOk={handleOk}
+            confirmLoading={confirmLoading}
+            onCancel={handleCancel}
+            okText={"o'chirish"}
+            okType={"danger"}
+            cancelText={"bekor qilish"}
+          >
+            <h2>Haqiqatan ham bu ma'lumotni o'chirib tashlamoqchimisiz?</h2>
+            <p>
+              Agar siz ushbu ma'lumotlarni o'chirib tashlasangiz, qayta
+              tiklanmaydi
+            </p>
+          </Modal>
+        </>
+      ),
+    }
   ];
 
   return (
